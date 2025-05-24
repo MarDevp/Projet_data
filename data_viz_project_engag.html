@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopInsight</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+      color: #333;
+      overflow-x: hidden;
+    }
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: #fff;
+      color: #333;
+      padding: 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+      min-width: 300px;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      color: #333;
+      border-bottom: 1px solid #e9ecef;
+      padding-bottom: 10px;
+      margin-top: 30px;
+      font-size: 16px;
+    }
+    .stat-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .stat-card h3 {
+      margin-top: 0;
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+      margin: 5px 0;
+    }
+    .stat-desc {
+      font-size: 12px;
+      color: #666;
+    }
+    .main-content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .chart-container {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+      font-weight: 600;
+      font-size: 30px;
+      margin-bottom: 20px;
+      grid-column: 1 / -1;
+    }
+    h2 {
+      color: #333;
+      font-size: 14px;
+      margin-top: 0;
+      margin-bottom: 15px;
+    }
+    .axis-label {
+      font-size: 13px;
+      fill: #666;
+      font-weight: 500;
+    }
+    .tooltip {
+      position: absolute;
+      padding: 8px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      border-radius: 4px;
+      pointer-events: none;
+      font-size: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .tooltip strong {
+      color: #3b82f6;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .source {
+      text-align: right;
+      font-size: 12px;
+      color: #666;
+      margin-top: 10px;
+    }
+    .bar {
+      fill: #3b82f6;
+      transition: fill 0.3s, opacity 0.3s;
+    }
+    .bar:hover {
+      opacity: 0.8;
+    }
+    .dot {
+      opacity: 0.8;
+      stroke: white;
+      stroke-width: 1px;
+      transition: all 0.2s ease;
+    }
+    .dot:hover {
+      stroke: #333;
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    .bubble {
+      opacity: 0.9;
+      stroke: white;
+      stroke-width: 1.5px;
+      transition: all 0.2s ease;
+    }
+    .bubble:hover {
+      stroke: #333;
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    .grid line {
+      stroke: #e9ecef;
+      stroke-dasharray: 3,3;
+    }
+    .pie-label {
+      fill: #000;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .legend text {
+      font-size: 12px;
+      fill: #000;
+    }
+    .heatmap-cell {
+      stroke: white;
+      transition: all 0.2s ease;
+    }
+    .heatmap-cell:hover {
+      stroke: #333;
+      stroke-width: 2px;
+    }
+    
+    /* Styles spécifiques pour le donut chart */
+    .engagement-container {
+      position: relative;
+      width: 100%;
+      height: 150px;
+    }
+    .engagement-legend {
+      position: absolute;
+      right: 10px;
+      top: 20px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 8px;
+    }
+    .total-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      pointer-events: none;
+    }
+    .total-number {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    .total-label {
+      font-size: 10px;
+      color: #666;
+    }
+    
+    @media (max-width: 1200px) {
+      .dashboard {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+      }
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        padding: 15px;
+      }
+      .stat-card {
+        padding: 10px;
+      }
+    }
+
+    /* NAVBAR */
+.navbar {
+  background-color: #2c3e50;
+  padding: 15px 60px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  left: -60px; /* compense le margin body */
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li a {
+  color: white;
+  margin-right: 40px;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.navbar-brand {
+  margin-left: 30px; 
+}
+.navbar-links li a:hover {
+  color: #1abc9c;
+}
+/* FOOTER */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  padding: 20px 0;
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+  </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="navbar-brand">ShopInsight</div>
+      <ul class="navbar-links">
+        <li><a href="dashboard.html">Accueil</a></li>
+        <li><a href="customer.html">Clients</a></li>
+        <li><a href="data_viz_project_sales.html">Ventes</a></li>
+        <li><a href="#">Engagement</a></li>
+      </ul>
+    </nav>
+
+
+  <div class="dashboard">
+    <div class="sidebar">
+      <h1>Statistiques Clés</h1>
+      
+      <div class="stat-card">
+        <h3>Satisfaction Moyenne</h3>
+        <div class="stat-value" id="avg-satisfaction">-</div>
+        <div class="stat-desc">Score moyen de satisfaction client</div>
+      </div>
+      
+      <h2>Répartition Engagement</h2>
+      <div id="engagement-distribution" class="engagement-container"></div>
+      
+      <h2>Répartition Satisfaction</h2>
+      <div id="satisfaction-distribution" style="height: 150px;"></div>
+    </div>
+    
+    <div class="main-content">
+      <h1>Analyse Engagement Publicitaire vs Satisfaction Client</h1>
+      
+      <div class="chart-container">
+        <h2>Heatmap d'Engagement vs Satisfaction</h2>
+        <div id="heatmap"></div>
+        <div class="source">Source: DataVizCleanedFileV06.csv</div>
+      </div>
+      
+      <div class="chart-container">
+        <h2>Influence des réseaux sociaux</h2>
+        <div id="barchart"></div>
+        <div class="source">Source: DataVizCleanedFileV06.csv</div>
+      </div>
+    </div>
+  </div>
+  
+
+  <script src="engag.js"></script>
+
+
+    <!-- FOOTER -->
+    <footer>
+      © 2025 Analyse Clients – Réalisé par Chayma & Mariem.
+    </footer>
+</body>
+</html>

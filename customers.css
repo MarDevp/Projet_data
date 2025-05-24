@@ -1,0 +1,154 @@
+/* GLOBAL */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0px 60px;
+  background: #f4f6f9;
+  color: #333;
+  box-sizing: border-box;
+}
+
+/* HEADER */
+header {
+  text-align: center;
+  margin: 40px 0 30px;
+}
+
+h1 {
+  color: #333;
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 1.4rem;
+  color: #34495e;
+}
+
+/* KPI */
+.kpi-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.kpi {
+  background: #ffffff;
+  padding: 12px 15px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  width: 230px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.kpi div:first-child {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+/* CHARTS */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+/* FULL-WIDTH CARD */
+.full-width {
+  grid-column: span 2;
+}
+
+/* DEVICE & PAYMENT */
+.device-payment-container {
+  display: flex;
+  gap: 20px;
+}
+
+.half-chart {
+  flex: 1;
+}
+
+/* SELECT */
+.custom-select {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin: 10px 0 20px;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-select:hover {
+  border-color: #3498db;
+  background-color: #eef7fd;
+}
+
+svg {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}
+
+/* NAVBAR */
+.navbar {
+  background-color: #2c3e50;
+  padding: 15px 60px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  left: -60px; /* compense le margin body */
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li a {
+  color: white;
+  margin-right: 40px;
+
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+.navbar-brand {
+  margin-left: 30px; 
+}
+.navbar-links li a:hover {
+  color: #1abc9c;
+}
+
+footer {
+  width: 100%;
+  text-align: center;
+  margin-top: 60px;
+  padding: 20px 0;
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}

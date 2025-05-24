@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>ShopInsight</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    
+    .dashboard {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    .sidebar {
+      width: 300px;
+      background-color: #fff;
+      padding: 20px;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+    
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .header {
+      margin-bottom: 20px;
+    }
+    
+    .stats-container {
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .stat-title {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .stat-change {
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    
+    .positive {
+      color: #2ecc71;
+    }
+    
+    .negative {
+      color: #e74c3c;
+    }
+    
+    .filters {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .filter-group {
+      margin-bottom: 15px;
+    }
+    
+    .filter-label {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .filter-option {
+      padding: 5px 10px;
+      background-color: #f1f3f5;
+      border-radius: 15px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .filter-option:hover {
+      background-color: #e9ecef;
+    }
+    
+    .filter-option.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+    
+    .visualizations {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      flex: 1;
+    }
+    
+    .chart-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .chart-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #333;
+    }
+    
+    .tooltip {
+      position: absolute;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    
+    .node {
+      font-size: 10px;
+      overflow: hidden;
+    }
+    
+    .node text {
+      pointer-events: none;
+      fill: white;
+    }
+    
+    .bar {
+      transition: fill 0.3s, opacity 0.3s;
+    }
+    
+    .bar:hover {
+      opacity: 0.8;
+    }
+    
+    .legend {
+      font-size: 12px;
+      pointer-events: none;
+    }
+    
+    .legend rect {
+      stroke: #333;
+      stroke-width: 1px;
+    }
+
+    /* NAVBAR */
+.navbar {
+  background-color: #2c3e50;
+  padding: 15px 60px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  left: -60px; /* compense le margin body */
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li a {
+  color: white;
+  margin-right: 40px;
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+.navbar-brand {
+  margin-left: 30px; 
+}
+.navbar-links li a:hover {
+  color: #1abc9c;
+}
+/* FOOTER */
+footer {
+  text-align: center;
+  margin-top: 60px;
+  padding: 20px 0;
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  font-size: 0.95rem;
+}
+
+  </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="navbar-brand">ShopInsight</div>
+      <ul class="navbar-links">
+        <li><a href="dashboard.html">Accueil</a></li>
+        <li><a href="customer.html">Clients</a></li>
+        <li><a href="#">Ventes</a></li>
+        <li><a href="data_viz_project_engag.html">Engagement</a></li>
+      </ul>
+    </nav>
+    
+  <div class="dashboard">
+    <!-- Sidebar avec statistiques et filtres -->
+    <div class="sidebar">
+      <div class="header">
+        <h1>Analyse des achats</h1>
+      </div>
+      
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-title">Montant total</div>
+          <div class="stat-value" id="total-amount">-</div>
+          <div class="stat-change positive" id="total-change">+0% vs moyenne</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-title">Nombre de transactions</div>
+          <div class="stat-value" id="total-transactions">-</div>
+          <div class="stat-change positive" id="transactions-change">+0% vs moyenne</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-title">Panier moyen</div>
+          <div class="stat-value" id="avg-basket">-</div>
+          <div class="stat-change negative" id="basket-change">-0% vs moyenne</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-title">Utilisation de réductions</div>
+          <div class="stat-value" id="discount-usage">-</div>
+          <div class="stat-change positive" id="discount-change">+0% vs moyenne</div>
+        </div>
+      </div>
+      
+      <div class="filters">
+        <div class="filter-group">
+          <div class="filter-label">Méthode de paiement:</div>
+          <div class="filter-options">
+            <div class="filter-option active" data-filter="all" data-type="payment">Tous</div>
+            <div class="filter-option" data-filter="paypal" data-type="payment">PayPal</div>
+            <div class="filter-option" data-filter="other" data-type="payment">Autre</div>
+            <div class="filter-option" data-filter="debit card" data-type="payment">Carte débit</div>
+            <div class="filter-option" data-filter="credit card" data-type="payment">Carte crédit</div>
+            <div class="filter-option" data-filter="cash" data-type="payment">Espèces</div>
+          </div>
+        </div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Réduction utilisée:</div>
+          <div class="filter-options">
+            <div class="filter-option active" data-filter="all" data-type="discount">Tous</div>
+            <div class="filter-option" data-filter="True" data-type="discount">Oui</div>
+            <div class="filter-option" data-filter="False" data-type="discount">Non</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Contenu principal avec visualisations -->
+    <div class="main-content">
+      <h1>Analyse des ventes</h1>
+
+      <div class="visualizations">
+        <div class="chart-container">
+          <div class="chart-title">Répartition des achats par catégorie</div>
+          <svg id="treemap" width="100%" height="400"></svg>
+        </div>
+        
+        <div class="chart-container">
+          <div class="chart-title">Répartition des montants d'achat</div>
+          <svg id="histogram" width="100%" height="400"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tooltip" id="tooltip"></div>
+  <div class="tooltip" id="histogram-tooltip"></div>
+
+  <script src="sales.js"></script>
+
+
+  <!-- FOOTER -->
+  <footer>
+    © 2025 Analyse Clients – Réalisé par Chayma & Mariem.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShopInsight</title>
+  <link rel="stylesheet" href="customers.css">
+  <script src="d3.min.js"></script>
+  
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-brand">ShopInsight</div>
+    <ul class="navbar-links">
+      <li><a href="dashboard.html">Accueil</a></li>
+      <li><a href="#">Clients</a></li>
+      <li><a href="data_viz_project_sales.html">Ventes</a></li>
+      <li><a href="data_viz_project_engag.html">Engagement</a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <h1>Analyse détaillée des  clients</h1>
+  </header>
+
+  <!-- GRAPHIQUES -->
+  <div class="grid-container">
+
+    <div class="card">
+      <h2>Engagement Publicitaire (filtré par Genre)</h2>
+      <label for="genre-select">Genre :</label>
+      <select id="genre-select">
+        <option value="all">Tous</option>
+        <option value="male">Homme</option>
+        <option value="female">Femme</option>
+      </select>
+      <div id="pie-engagement-by-gender"></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card">
+      <h2>Corrélation : Fréquence d'Achat vs. Sensibilité aux Promotions</h2>
+      <div id="heatmap-frequency-discount"></div>
+    </div>
+
+</div>
+
+  <!-- FOOTER -->
+   
+  <footer >
+    © 2025 Analyse Clients – Réalisé par Chayma & Mariem.
+  </footer>
+
+  <script src="customers.js"></script>
+</body>
+</html>

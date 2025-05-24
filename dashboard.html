@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShopInsight</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="d3.min.js"></script>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-brand">ShopInsight</div>
+    <ul class="navbar-links">
+      <li><a href="#">Accueil</a></li>
+      <li><a href="customer.html">Clients</a></li>
+      <li><a href="data_viz_project_sales.html">Ventes</a></li>
+      <li><a href="data_viz_project_engag.html">Engagement</a></li>
+    </ul>
+  </nav>
+
+  <!-- HEADER -->
+  <header>
+    <h1>Bienvenue sur Le Tableau de Bord de ShopInsight</h1>
+  </header>
+
+  <!-- A. Indicateurs Clés -->
+  <section class="kpi-cards" id="kpi-cards">
+    <!-- Les KPI seront insérés dynamiquement -->
+  </section>
+
+  <div class="grid-container">
+    <!-- Répartition par Genre -->
+    <div class="card">
+      <h2>Répartition des Clients par Genre</h2>
+      <label for="filter-education">Filtrer par niveau d'éducation :</label>
+      <select id="filter-education" class="custom-select">
+        <option value="all">Tous</option>
+      </select>
+      <div id="donut-gender"></div>
+    </div>
+
+
+    <!--  Fréquence d’achat selon l’Âge -->
+    <div class="card">
+      <h2>Fréquence d’Achat par Tranche d’Âge</h2>
+      <div id="bar-age-frequency"></div>
+    </div>
+
+    <!-- Corrélation entre Recherche et Achat -->
+    <div class="card">
+      <h2>Corrélation entre Recherche et Achat</h2>
+      <label for="heatmap-filter">Filtrer par canal :</label>
+      <select id="heatmap-filter" class="custom-select">
+        <option value="all">Tous</option>
+      </select>
+      <div id="heatmap-correlation"></div>
+    </div>
+
+    <!-- Heatmap seule -->
+    <div class="card">
+      <h2>Carte de Chaleur des Achats (par Mois et Jour)</h2>
+      <div id="purchase-heatmap"></div>
+    </div>
+
+</div>
+  <!-- FOOTER -->
+  <footer>
+    © 2025 Analyse Clients – Réalisé par Chayma & Mariem.
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

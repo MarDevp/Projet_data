@@ -1,0 +1,4 @@
+Dans le dossier contenant le projet:
+python -m http.server 8000
+puis ouvrir:
+http://localhost:8000/dashboard.html
