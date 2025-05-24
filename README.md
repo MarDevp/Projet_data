@@ -27,7 +27,7 @@ Chaque interface propose des visualisations dynamiques et intuitives, conçues �
 ## Technologies utilisées
 
 - **HTML5 / CSS3** : Structure et mise en forme du dashboard  
-- **JavaScript (ES6)** : Logique interactive et traitement des données  
+- **JavaScript** : Logique interactive et traitement des données  
 - **D3.js** : Visualisations de données interactives et dynamiques
 
 ---
