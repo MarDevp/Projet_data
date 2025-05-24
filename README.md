@@ -38,7 +38,8 @@ Chaque interface propose des visualisations dynamiques et intuitives, con√ßues √
    ```bash
    git clone https://github.com/votre-utilisateur/Projet_data.git
 2. Ouvrez le dossier du projet
-   bash: cd Projet_data
+   ```bash
+   cd Projet_data
 
 3. Double-cliquez sur le fichier dashboard.html pour lancer le dashboard dans votre navigateur.
 
